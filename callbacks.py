@@ -19,7 +19,8 @@ class GradientSonification(Callback):
                  model,
                  fs=44100,
                  duration=0.01,
-                 freq=200.0):
+                 freq=200.0,
+                 plot=True):
 
         self.path = path if path.endswith('.wav') else path + '.wav'
         self.model = model
@@ -28,16 +29,16 @@ class GradientSonification(Callback):
         self.fs = fs
         self.duration = duration
         self.freq = freq
+        self.plot = plot
         self.frames = []
-
+        self.p, self.stream = None, None
 
     def get_metrics(self, layer):
         ''' Create a custom metric which outputs the gradient norm for a given layer '''
         def func(y_true, y_pred):
             loss = self.model.loss_functions[0](y_true, y_pred)
             weights = self.model.get_layer(layer).trainable_weights
-            grad = self.model.optimizer.get_gradients(loss, weights[0])
-            grad = grad[0]
+            grad = self.model.optimizer.get_gradients(loss, weights[0])[0]
             norm = K.sqrt(K.sum(K.square(grad)))
             return norm
 
@@ -61,7 +62,9 @@ class GradientSonification(Callback):
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
-        self.plot_audio()
+
+        if self.plot:
+            self.plot_audio()
 
     def on_batch_end(self, batch, logs={}):
         '''
