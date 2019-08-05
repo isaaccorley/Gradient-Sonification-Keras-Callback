@@ -1,7 +1,7 @@
 import os
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.optimizers import SGD, Adam, RMSprop, Adadelta
+from keras.datasets import mnist
+from keras.utils import to_categorical
+from keras.optimizers import SGD, Adam, RMSprop, Adadelta
 from itertools import product
 
 from models import CNN, DNN
@@ -16,7 +16,6 @@ if not os.path.exists(path):
 batch_size = 32
 num_classes = 10
 epochs = 5
-steps_per_epoch = 200
 
 fs = 44100
 duration = 0.01
@@ -29,18 +28,18 @@ X_train /= 255
 y_train = to_categorical(y_train, num_classes)
 
 # Param space
-learning_rates = [0.0001, 0.01, 0.1, 1.0]
+learning_rates = [1.0, 0.1, 0.01,]
 optimizers = [SGD, Adam, RMSprop, Adadelta]
 activations = ['relu', 'linear', 'sigmoid', 'tanh']
 
 #%%
-for lr, opt, act in product(learning_rates, optimizers, activations):
+for act, lr, opt in product(activations, learning_rates, optimizers):
 
     # Train CNN
     fname = '_'.join(['cnn', opt.__name__.lower(), str(lr), act])
     fname = path + fname + '.wav'
     print(fname)
-    model = CNN(input_shape=X_train.shape[1:],
+    model = CNN(input_shape=(28,28,1),
                 activation=act)
     model.summary()
 
@@ -57,7 +56,6 @@ for lr, opt, act in product(learning_rates, optimizers, activations):
     model.fit(X_train, y_train,
               batch_size=batch_size,
               epochs=epochs,
-              steps_per_epoch=steps_per_epoch,
               verbose=1,
               callbacks=[grad_son])
 
@@ -66,7 +64,7 @@ for lr, opt, act in product(learning_rates, optimizers, activations):
     fname = '_'.join(['dnn', opt.__name__.lower(), str(lr), act])
     fname = path + fname + '.wav'
     print(fname)
-    model = DNN(input_shape=X_train.shape[1:],
+    model = DNN(input_shape=(28*28,),
                 activation=act)
     model.summary()
 
@@ -80,9 +78,8 @@ for lr, opt, act in product(learning_rates, optimizers, activations):
                   optimizer=opt(lr=lr),
                   metrics=['accuracy'] + grad_son.metrics)
 
-    model.fit(X_train, y_train,
+    model.fit(X_train.reshape(X_train.shape[0], 28*28, 1).squeeze(), y_train,
               batch_size=batch_size,
               epochs=epochs,
-              steps_per_epoch=steps_per_epoch,
               verbose=1,
               callbacks=[grad_son])

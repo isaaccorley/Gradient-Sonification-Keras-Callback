@@ -2,11 +2,14 @@ import os
 import wave
 import pyaudio
 import librosa
+import librosa.display
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
-import tensorflow.keras.backend as K
-from tensorflow.keras.callbacks import Callback
+import keras.backend as K
+from keras.callbacks import Callback
 
+matplotlib.rcParams['agg.path.chunksize'] = 100000
 
 class GradientSonification(Callback):
     """ Convert the norm of the gradients into audio """
@@ -63,7 +66,7 @@ class GradientSonification(Callback):
         dict with keys equivalent to the function __name__ attribute
         '''
         for layer in self.trainable_layers:
-            tone = self.freq + ((logs.get('gradient_norm_' + layer)) * 100.0)
+            tone = self.freq + ((logs.get('gradient_norm_' + layer)) * 100000.0)
             tone = tone.astype(np.float32)
             samples = self.generate_tone(tone)
             self.frames.append(samples)
@@ -93,13 +96,15 @@ class GradientSonification(Callback):
         x, sr = librosa.load(self.path)
 
         # Wave plot
-        fname = os.splitext(self.path)[0] + '_waveplot.png'
+        '''
+        fname = os.path.splitext(self.path)[0] + '_waveplot.png'
         plt.figure(figsize=(14, 5))
         librosa.display.waveplot(x, sr=sr)
         plt.savefig(fname)
+        '''
 
         # Spectrogram
-        fname = os.splitext(self.path)[0] + '_spectrogram.png'
+        fname = os.path.splitext(self.path)[0] + '_spectrogram.png'
         X = librosa.stft(x)
         Xdb = librosa.amplitude_to_db(abs(X))
         plt.figure(figsize=(14, 5))

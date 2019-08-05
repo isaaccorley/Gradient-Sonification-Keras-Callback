@@ -1,5 +1,5 @@
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
 
 
 def CNN(input_shape,
@@ -49,8 +49,9 @@ def DNN(input_shape,
         ):
 
     model = Sequential()
+    model.add(Dense(units=units, activation=activation, input_shape=input_shape))
 
-    for _ in range(num_dense-1):
+    for _ in range(num_dense-2):
         model.add(Dense(units=units, activation=activation))
         model.add(Dropout(dropout))
 
