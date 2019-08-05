@@ -6,8 +6,8 @@ import librosa.display
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import keras.backend as K
-from keras.callbacks import Callback
+import tensorflow.keras.backend as K
+from tensorflow.keras.callbacks import Callback
 
 matplotlib.rcParams['agg.path.chunksize'] = 100000
 
@@ -34,7 +34,10 @@ class GradientSonification(Callback):
     def get_metrics(self, layer):
         ''' Create a custom metric which outputs the gradient norm for a given layer '''
         def func(y_true, y_pred):
-            grad = self.model.optimizer.get_gradients(y_pred, self.model.get_layer(layer).trainable_weights[0])[0]
+            loss = self.model.loss_functions[0](y_true, y_pred)
+            weights = self.model.get_layer(layer).trainable_weights
+            grad = self.model.optimizer.get_gradients(loss, weights[0])
+            grad = grad[0]
             norm = K.sqrt(K.sum(K.square(grad)))
             return norm
 
@@ -66,7 +69,7 @@ class GradientSonification(Callback):
         dict with keys equivalent to the function __name__ attribute
         '''
         for layer in self.trainable_layers:
-            tone = self.freq + ((logs.get('gradient_norm_' + layer)) * 100000.0)
+            tone = self.freq + ((logs.get('gradient_norm_' + layer)) * 100.0)
             tone = tone.astype(np.float32)
             samples = self.generate_tone(tone)
             self.frames.append(samples)
@@ -105,9 +108,8 @@ class GradientSonification(Callback):
 
         # Spectrogram
         fname = os.path.splitext(self.path)[0] + '_spectrogram.png'
-        X = librosa.stft(x)
-        Xdb = librosa.amplitude_to_db(abs(X))
+        Xdb = librosa.amplitude_to_db(np.abs(librosa.stft(x)), ref=np.max)
         plt.figure(figsize=(14, 5))
-        librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='hz')
+        librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='log')
         plt.colorbar()
         plt.savefig(fname)

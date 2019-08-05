@@ -1,7 +1,7 @@
 import os
-from keras.datasets import mnist
-from keras.utils import to_categorical
-from keras.optimizers import SGD, Adam, RMSprop, Adadelta
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.optimizers import SGD, Adam, RMSprop, Adadelta
 from itertools import product
 
 from models import CNN, DNN
@@ -13,9 +13,9 @@ path = 'files/'
 if not os.path.exists(path):
     os.mkdir(path)
 
-batch_size = 32
+batch_size = 10
 num_classes = 10
-epochs = 5
+epochs = 1
 
 fs = 44100
 duration = 0.01
@@ -33,6 +33,36 @@ optimizers = [SGD, Adam, RMSprop, Adadelta]
 activations = ['relu', 'linear', 'sigmoid', 'tanh']
 
 #%%
+model = CNN(input_shape=(28,28,1),
+            activation='relu')
+model.summary()
+model.compile(loss='categorical_crossentropy',
+              optimizer=SGD(lr=0.01),
+              metrics=['accuracy'])
+
+#%%
+grad_son = GradientSonification(path='sample',
+                                model=model,
+                                fs=fs,
+                                duration=duration,
+                                freq=freq)
+
+#%%
+model.compile(loss='categorical_crossentropy',
+              optimizer=SGD(lr=1.0),
+              metrics=['accuracy'] + grad_son.metrics)
+
+#%%
+model.fit(X_train, y_train,
+          batch_size=batch_size,
+          epochs=epochs,
+          verbose=1,
+          callbacks=[grad_son])
+
+#%%
+
+
+'''
 for act, lr, opt in product(activations, learning_rates, optimizers):
 
     # Train CNN
@@ -43,6 +73,10 @@ for act, lr, opt in product(activations, learning_rates, optimizers):
                 activation=act)
     model.summary()
 
+    model.compile(loss='categorical_crossentropy',
+                  optimizer=opt(lr=lr),
+                  metrics=['accuracy'])
+
     grad_son = GradientSonification(path=fname,
                                     model=model,
                                     fs=fs,
@@ -52,6 +86,7 @@ for act, lr, opt in product(activations, learning_rates, optimizers):
     model.compile(loss='categorical_crossentropy',
                   optimizer=opt(lr=lr),
                   metrics=['accuracy'] + grad_son.metrics)
+
 
     model.fit(X_train, y_train,
               batch_size=batch_size,
@@ -83,3 +118,4 @@ for act, lr, opt in product(activations, learning_rates, optimizers):
               epochs=epochs,
               verbose=1,
               callbacks=[grad_son])
+'''
