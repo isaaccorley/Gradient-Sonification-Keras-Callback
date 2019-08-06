@@ -55,4 +55,4 @@ model.fit(X_train, y_train,
 
 ```
 
-#### 5. Output files should be like sample.wav and sample.png which represents the audio and spectrogram files, respectively.
+#### 5. After training is complete, the output files should be like that of sample.wav and sample.png which represents the audio and spectrogram files, respectively.
