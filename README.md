@@ -35,6 +35,8 @@ model.compile(loss='categorical_crossentropy',
 
 #### 2. Define the callback
 ```python
+from callbacks import GradientSonification
+
 fs = 44100
 duration = 0.01
 freq = 200.0
