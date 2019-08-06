@@ -28,9 +28,9 @@ X_train /= 255
 y_train = to_categorical(y_train, num_classes)
 
 # Param space
-learning_rates = [0.1, 0.01,]
+learning_rates = [1.0, 0.1, 0.01,]
 optimizers = [SGD, Adam, RMSprop, Adadelta]
-activations = ['tanh']
+activations = ['relu', 'linear', 'sigmoid', 'tanh']
 
 for act, lr, opt in product(activations, learning_rates, optimizers):
 
