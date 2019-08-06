@@ -6,6 +6,17 @@ Inspired heavily by [Christian Perone's blog post and Pytorch implementation](ht
 #### Comments
 A loop was performed over the parameter space below to further analyze the differences. Notably the most interesting result is when tweaking the activation function and optimizer.
 
+| Italic             |  Block letters |
+:-------------------------:|:-------------------------:
+![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)  |  ![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)
+| Italic             |  Block letters |
+:-------------------------:|:-------------------------:
+![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)  |  ![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)
+| Italic             |  Block letters |
+:-------------------------:|:-------------------------:
+![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)  |  ![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)
+
+
 ```
 model = [CNN, DNN]
 learning_rates = [1.0, 0.1, 0.01,]
