@@ -6,15 +6,10 @@ Inspired heavily by [Christian Perone's blog post and Pytorch implementation](ht
 #### Comments
 A loop was performed over the parameter space below to further analyze the differences. Notably the most interesting result is when tweaking the activation function and optimizer.
 
-| Italic             |  Block letters |
-:-------------------------:|:-------------------------:
-![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)  |  ![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)
-| Italic             |  Block letters |
-:-------------------------:|:-------------------------:
-![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)  |  ![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)
-| Italic             |  Block letters |
-:-------------------------:|:-------------------------:
-![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)  |  ![](spectrograms/dnn_sgd_0.01_linear_spectrogram.png)
+| DNN SGD 0.01 ReLU             |  DNN SGD 0.01 Linear |
+![](assets/dnn_sgd_0.01_relu_spectrogram.png)  |  ![](assets/dnn_sgd_0.01_linear_spectrogram.png)
+| DNN SGD 0.01 Sigmoid             |  DNN SGD 0.01 Tanh |
+![](assets/dnn_sgd_0.01_sigmoid_spectrogram.png)  |  ![](assets/dnn_sgd_0.01_tanh_spectrogram.png)
 
 
 ```
