@@ -3,6 +3,8 @@
 
 Inspired heavily by [Christian Perone's blog post and Pytorch implementation](http://blog.christianperone.com/2019/08/listening-to-the-neural-network-gradient-norms-during-training/)
 
+Audio samples can be found [here](https://www.kaggle.com/isaacco/neural-network-gradient-sonification)
+
 ##### DNN SGD 0.01 ReLU
 ![](assets/dnn_sgd_0.01_relu_spectrogram.png)
 
