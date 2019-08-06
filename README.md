@@ -3,9 +3,6 @@
 
 Inspired heavily by [Christian Perone's blog post and Pytorch implementation](http://blog.christianperone.com/2019/08/listening-to-the-neural-network-gradient-norms-during-training/)
 
-#### Comments
-A loop was performed over the parameter space below to further analyze the differences. Notably the most interesting result is when tweaking the activation function and optimizer.
-
 ##### DNN SGD 0.01 ReLU
 ![](assets/dnn_sgd_0.01_relu_spectrogram.png)
 
@@ -18,6 +15,8 @@ A loop was performed over the parameter space below to further analyze the diffe
 ##### DNN SGD 0.01 Tanh
 ![](assets/dnn_sgd_0.01_tanh_spectrogram.png)
 
+#### Comments
+A loop was performed over the parameter space below to further analyze the differences. Notably the most interesting result is when tweaking the activation function and optimizer.
 
 ```
 model = [CNN, DNN]
