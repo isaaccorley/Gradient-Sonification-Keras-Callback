@@ -3,6 +3,17 @@
 
 Inspired heavily by [Christian Perone's blog post and Pytorch implementation](http://blog.christianperone.com/2019/08/listening-to-the-neural-network-gradient-norms-during-training/)
 
+#### Comments
+A loop was performed over the parameter space below to further analyze the differences. Notably the most interesting result is when tweaking the activation function and optimizer.
+
+```
+model = [CNN, DNN]
+learning_rates = [1.0, 0.1, 0.01,]
+optimizers = [SGD, Adam, RMSprop, Adadelta]
+activations = ['relu', 'linear', 'sigmoid', 'tanh']
+
+```
+
 #### 1. Setup and compile your model
 ```python
 model = Sequential([...])
@@ -43,3 +54,5 @@ model.fit(X_train, y_train,
           callbacks=[grad_son])
 
 ```
+
+#### 5. Output files should be like sample.wav and sample.png which represents the audio and spectrogram files, respectively.
